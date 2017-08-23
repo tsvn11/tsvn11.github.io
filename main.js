@@ -2,11 +2,8 @@ const socket = io('https://stream3008.herokuapp.com/');
 
 $('#div-chat').hide();
 
-// This object will take in an array of XirSys STUN / TURN servers
-// and override the original config object
 let customConfig;
 
-// Call XirSys ICE servers
 $.ajax({
 url: "https://service.xirsys.com/ice",
 data: {
@@ -39,12 +36,13 @@ socket.on('DANH_SACH_ONLINE', arrUserInfo => {
         $('#ulUser').append(`<li id="${peerId}">${ten}</li>`);
     });
 
-    socket.on('NGUOI_DUNG_NGAT_KET_NOI', peerId => {
+    socket.on('AI_DO_NGAT_KET_NOI', peerId => {
         $(`#${peerId}`).remove();
     });
 });
 
-socket.on('DANG_KY_THAT_BAI', () => alert('Vui long chon username khac!'));
+socket.on('DANG_KY_THAT_BAT', () => alert('Vui long chon username khac!'));
+
 
 function openStream() {
     const config = { audio: false, video: true };

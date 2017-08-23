@@ -2,6 +2,29 @@ const socket = io('https://stream3008.herokuapp.com/');
 
 $('#div-chat').hide();
 
+// This object will take in an array of XirSys STUN / TURN servers
+// and override the original config object
+let customConfig;
+
+// Call XirSys ICE servers
+$.ajax({
+url: "https://service.xirsys.com/ice",
+data: {
+  ident: "thaisonvnn11",
+  secret: "3b9f300c-87f5-11e7-bf7f-7ac1a8e15c37",
+  domain: "tsvn11.github.io",
+  application: "default",
+  room: "default",
+  secure: 1
+},
+success: function (data, status) {
+  // data.d is where the iceServers object lives
+  customConfig = data.d;
+  console.log(customConfig);
+},
+async: false
+});
+
 socket.on('DANH_SACH_ONLINE', arrUserInfo => {
     $('#div-chat').show();
     $('#div-dangky').hide();
@@ -37,7 +60,13 @@ function playStream(idVideoTag, stream) {
 //openStream()
 //.then(stream => playStream('localStream', stream));
 
-var peer = new Peer({ key: 'peerjs', host: 'mypeer3008.herokuapp.com', secure: true, port: 443 });
+var peer = new Peer({
+    key: 'peerjs',
+    host: 'mypeer3008.herokuapp.com',
+    secure: true,
+    port: 443,
+    config: customConfig 
+});
 
 peer.on('open', id => {
     $('#my-peer').append(id);

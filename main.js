@@ -27,7 +27,7 @@ async: false
 
 socket.on('DANH_SACH_ONLINE', arrUserInfo => {
     $('#div-chat').show();
-    $('#div-dangky').hide();
+    $('#div-dang-ky').hide();
 
     arrUserInfo.forEach(user => {
         const { ten, peerId } = user;
@@ -60,7 +60,7 @@ function playStream(idVideoTag, stream) {
 //openStream()
 //.then(stream => playStream('localStream', stream));
 
-var peer = new Peer({
+const peer = new Peer({
     key: 'peerjs',
     host: 'mypeer3008.herokuapp.com',
     secure: true,
@@ -71,7 +71,7 @@ var peer = new Peer({
 peer.on('open', id => {
     $('#my-peer').append(id);
     $('#btnSignUp').click(() => {
-        const username = $('#txtUserName').val();
+        const username = $('#txtUsername').val();
         socket.emit('NGUOI_DUNG_DANG_KY', { ten: username, peerId: id });
     });
 });
@@ -98,7 +98,8 @@ peer.on('call', call => {
 });
 
 $('#ulUser').on('click', 'li', function() {
-    const id = $(this).attr(`id`);
+    const id = $(this).attr('id');
+    console.log(id);
     openStream()
     .then(stream => {
         playStream('localStream', stream);
